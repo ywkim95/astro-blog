@@ -31,7 +31,7 @@ jobs:
           authKey: ${{ secrets.TAILSCALE_AUTH_KEY }}
 
       - name: Deploy to server
-        uses: appleboy/scp-action@v1.0.7
+        uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.TAILSCALE_HOST }}
           username: ${{ secrets.SSH_USER }}
