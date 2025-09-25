@@ -1,0 +1,20 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+const allPosts = await getCollection("blog");
+const pageTitle = "나의 Astro 학습 블로그";
+---
+
+<BaseLayout pageTitle={pageTitle}>
+  <h2>나의 블로그 포스트</h2>
+  <p>이곳에 나의 글들이 표시됩니다.</p>
+  <ul>
+    {
+      allPosts.map((post) => (
+        <li>
+          <a href={`/blog/${post.slug}/`}>{post.data.title}</a>
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>

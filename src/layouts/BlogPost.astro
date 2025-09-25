@@ -1,0 +1,15 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+const { title, description, pubDate, heroImage } = Astro.props;
+---
+
+<BaseLayout pageTitle={title} description={description}>
+  <article>
+    <img src={heroImage} width="720" height="360" alt="" />
+    <h1>{title}</h1>
+    <p><em>{description}</em></p>
+    <p>작성일: {pubDate}</p>
+    <hr />
+    <slot />
+  </article>
+</BaseLayout>
