@@ -1,6 +1,6 @@
 ---
 title: '미디어 파일 사용 예시'
-description: 'Astro 블로그에서 이미지와 영상을 사용하는 실제 예시입니다.ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ'
+description: 'Astro 블로그에서 이미지와 영상을 사용하는 실제 예시입니다.'
 pubDate: '2025-09-26'
 heroImage: '/images/placeholder-hero.jpg'
 author: 'Astro 개발자'
