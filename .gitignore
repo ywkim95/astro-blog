@@ -27,3 +27,6 @@ pnpm-debug.log*
 *.key
 *.pem
 github-actions-key*
+
+# Documentation
+docs/
