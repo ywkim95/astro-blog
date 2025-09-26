@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "d32bf905691624af",
+        "id": "3e7605928d606e38",
         "type": "tabs",
         "children": [
           {
-            "id": "9aa450353d9dda67",
+            "id": "828b09f295040e0e",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -143,8 +143,19 @@
               "icon": "lucide-list",
               "title": "개요"
             }
+          },
+          {
+            "id": "13664ecf1eff05d7",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
+            }
           }
-        ]
+        ],
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
@@ -159,9 +170,23 @@
       "daily-notes:오늘의 일일 노트 열기": false,
       "templates:템플릿 삽입": false,
       "command-palette:명령어 팔레트 열기": false,
-      "bases:새 베이스 생성하기": false
+      "bases:새 베이스 생성하기": false,
+      "obsidian-git:Open Git source control": false,
+      "templater-obsidian:Templater": false
     }
   },
-  "active": "9aa450353d9dda67",
-  "lastOpenFiles": []
+  "active": "828b09f295040e0e",
+  "lastOpenFiles": [
+    "src/content/blog/Untitled.md",
+    "src/content/blog/무제.md",
+    "src/content/blog/intro.md",
+    "templates/Template.md",
+    "src/content/blog/media-example.md",
+    "templates",
+    "public/attachments",
+    "src/assets/background.svg",
+    "src/assets/astro.svg",
+    "public/favicon.svg",
+    "README.md"
+  ]
 }

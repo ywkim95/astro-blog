@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 const allPosts = await getCollection("blog");
-const pageTitle = "나의 Astro 학습 블로그";
+const pageTitle = "나의 학습 블로그";
 ---
 
 <BaseLayout pageTitle={pageTitle}>
