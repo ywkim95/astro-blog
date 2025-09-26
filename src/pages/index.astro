@@ -6,15 +6,310 @@ const pageTitle = "나의 Astro 학습 블로그";
 ---
 
 <BaseLayout pageTitle={pageTitle}>
-  <h2>나의 블로그 포스트</h2>
-  <p>이곳에 나의 글들이 표시됩니다.</p>
-  <ul>
-    {
-      allPosts.map((post) => (
-        <li>
-          <a href={`/${post.slug}/`}>{post.data.title}</a>
-        </li>
-      ))
-    }
-  </ul>
+  <div class="blog-intro">
+    <p class="intro-text">개발과 학습의 여정을 기록하는 공간입니다.</p>
+    
+    <div class="search-bar">
+      <div class="search-input-container">
+        <input 
+          type="text" 
+          id="search-input" 
+          placeholder="포스트 검색..." 
+          class="search-input"
+        />
+        <button type="button" id="search-button" class="search-button">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="10" cy="10" r="7"></circle>
+            <path d="m21 21-6-6"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <section class="posts-section">
+    <h2 class="section-title">최근 포스트</h2>
+    
+    {allPosts.length > 0 ? (
+      <div class="posts-grid">
+        {allPosts.map((post) => (
+          <article class="post-card">
+            <div class="post-content">
+              <h3 class="post-title">
+                <a href={`/${post.slug}/`}>{post.data.title}</a>
+              </h3>
+              <p class="post-description">{post.data.description}</p>
+              <div class="post-meta">
+                <time class="post-date">{new Date(post.data.pubDate).toLocaleDateString('ko-KR')}</time>
+                {post.data.tags && (
+                  <div class="post-tags">
+                    {post.data.tags.slice(0, 3).map((tag) => (
+                      <a href={`/tags/${tag}/`} class="tag">{tag}</a>
+                    ))}
+                    {post.data.tags.length > 3 && (
+                      <a href="/tags/" class="tag more-tags">+{post.data.tags.length - 3}</a>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <div class="empty-state">
+        <p>아직 작성된 포스트가 없습니다.</p>
+        <p>첫 번째 포스트를 작성해보세요! ✨</p>
+      </div>
+    )}
+  </section>
 </BaseLayout>
+
+<style>
+  .blog-intro {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .intro-text {
+    font-size: 1.2rem;
+    color: #64748b;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+  }
+
+  .search-bar {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .search-input-container {
+    display: flex;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+  }
+
+  .search-input-container:focus-within {
+    border-color: #ea580c;
+    box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.1);
+  }
+
+  .search-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    background: white;
+  }
+
+  .search-button {
+    padding: 0.75rem 1rem;
+    background: #ea580c;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .search-button:hover {
+    background: #c2410c;
+  }
+
+
+
+  .posts-section {
+    margin-top: 2rem;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 2rem;
+    border-bottom: 3px solid #ea580c;
+    padding-bottom: 0.5rem;
+    display: inline-block;
+  }
+
+  .posts-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  .post-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+    height: fit-content;
+  }
+
+  .post-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-color: #ea580c;
+  }
+
+  .post-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .post-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .post-title a {
+    color: #1e293b;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .post-title a:hover {
+    color: #ea580c;
+  }
+
+  .post-description {
+    color: #64748b;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    flex-grow: 1;
+  }
+
+  .post-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #f1f5f9;
+  }
+
+  .post-date {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    font-weight: 500;
+  }
+
+  .post-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    background: #fff7ed;
+    color: #ea580c;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid #fed7aa;
+  }
+
+  .tag:hover {
+    background: #ea580c;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(234, 88, 12, 0.3);
+  }
+
+  .tag.more-tags {
+    background: #f1f5f9;
+    color: #64748b;
+    border-color: #e2e8f0;
+  }
+
+  .tag.more-tags:hover {
+    background: #64748b;
+    color: white;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #64748b;
+    background: #fff;
+    border-radius: 12px;
+    border: 2px dashed #e2e8f0;
+  }
+
+  .empty-state p:first-child {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .empty-state p:last-child {
+    font-size: 0.95rem;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .posts-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .post-card {
+      padding: 1.25rem;
+    }
+
+    .post-meta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  // 검색 실행
+  function executeSearch() {
+    const searchInput = document.getElementById('search-input') as HTMLInputElement;
+    const query = searchInput?.value?.trim() || '';
+    
+    if (query) {
+      window.location.href = `/search/?q=${encodeURIComponent(query)}`;
+    } else {
+      window.location.href = '/search/';
+    }
+  }
+
+  // 이벤트 리스너
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('search-input') as HTMLInputElement;
+    const searchButton = document.getElementById('search-button');
+
+    // 검색 버튼 클릭
+    searchButton?.addEventListener('click', executeSearch);
+
+    // 엔터키 검색
+    searchInput?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        executeSearch();
+      }
+    });
+  });
+</script>
+
+

@@ -1,0 +1,447 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const allPosts = await getCollection("blog");
+
+// 모든 태그 수집 및 빈도수 계산
+const tagCounts = {};
+allPosts.forEach((post) => {
+  if (post.data.tags) {
+    post.data.tags.forEach((tag) => {
+      tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+    });
+  }
+});
+
+// 태그를 빈도수별로 정렬
+const sortedTags = Object.entries(tagCounts)
+  .sort(([,a], [,b]) => b - a)
+  .map(([tag, count]) => ({ tag, count }));
+
+const pageTitle = "태그";
+---
+
+<BaseLayout pageTitle={pageTitle}>
+  <div class="tags-page">
+    <!-- 태그 페이지 헤더 -->
+    <header class="tags-header">
+      <p class="tags-description">
+        관심 있는 주제의 태그를 클릭하여 관련 포스트를 확인해보세요.
+      </p>
+    </header>
+
+    <!-- 태그 통계 -->
+    <section class="tags-stats">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number">{sortedTags.length}</div>
+          <div class="stat-label">전체 태그</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">{allPosts.length}</div>
+          <div class="stat-label">전체 포스트</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">{sortedTags[0]?.count || 0}</div>
+          <div class="stat-label">최다 사용 태그</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 태그 클라우드 -->
+    <section class="tags-cloud-section">
+      <h3 class="section-title">태그 클라우드</h3>
+      {sortedTags.length > 0 ? (
+        <div class="tags-cloud">
+          {sortedTags.map(({ tag, count }) => {
+            // 태그 사용 빈도에 따른 크기 계산
+            const maxCount = Math.max(...sortedTags.map(t => t.count));
+            const minSize = 0.8;
+            const maxSize = 2;
+            const size = minSize + (count / maxCount) * (maxSize - minSize);
+            
+            return (
+              <a 
+                href={`/tags/${tag}/`} 
+                class="tag-cloud-item"
+                style={`font-size: ${size}rem;`}
+                title={`${count}개의 포스트`}
+              >
+                {tag}
+                <span class="tag-count">({count})</span>
+              </a>
+            );
+          })}
+        </div>
+      ) : (
+        <div class="empty-tags">
+          <p>아직 태그가 없습니다.</p>
+        </div>
+      )}
+    </section>
+
+    <!-- 태그별 포스트 목록 -->
+    <section class="tags-list-section">
+      <h3 class="section-title">태그별 포스트</h3>
+      <div class="tags-list">
+        {sortedTags.map(({ tag, count }) => {
+          const tagPosts = allPosts.filter(post => 
+            post.data.tags && post.data.tags.includes(tag)
+          );
+          
+          return (
+            <div class="tag-group">
+              <div class="tag-group-header">
+                <h4 class="tag-group-title">
+                  <a href={`/tags/${tag}/`}>#{tag}</a>
+                  <span class="tag-group-count">{count}개 포스트</span>
+                </h4>
+              </div>
+              <div class="tag-posts-preview">
+                {tagPosts.slice(0, 3).map((post) => (
+                  <div class="preview-post">
+                    <a href={`/${post.slug}/`} class="preview-title">
+                      {post.data.title}
+                    </a>
+                    <time class="preview-date">
+                      {new Date(post.data.pubDate).toLocaleDateString('ko-KR')}
+                    </time>
+                  </div>
+                ))}
+                {tagPosts.length > 3 && (
+                  <div class="more-posts">
+                    <a href={`/tags/${tag}/`} class="more-link">
+                      +{tagPosts.length - 3}개 더 보기
+                    </a>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+
+    <!-- 네비게이션 -->
+    <div class="tags-navigation">
+      <a href="/" class="nav-link">← 블로그 홈으로</a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .tags-page {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  /* 헤더 */
+  .tags-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .tags-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin: 0 0 1rem;
+  }
+
+  .tags-description {
+    font-size: 1.2rem;
+    color: #64748b;
+    margin: 0;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* 통계 섹션 */
+  .tags-stats {
+    margin-bottom: 3rem;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+
+  .stat-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #ea580c;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-label {
+    color: #64748b;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+
+  /* 섹션 공통 스타일 */
+  .section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 1.5rem;
+    border-bottom: 3px solid #ea580c;
+    padding-bottom: 0.5rem;
+    display: inline-block;
+  }
+
+  section {
+    margin-bottom: 3rem;
+  }
+
+  /* 태그 클라우드 */
+  .tags-cloud-section {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+  }
+
+  .tags-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 0;
+  }
+
+  .tag-cloud-item {
+    color: #ea580c;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    background: #fff7ed;
+    border: 2px solid #fed7aa;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .tag-cloud-item:hover {
+    background: #ea580c;
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(234, 88, 12, 0.3);
+  }
+
+  .tag-count {
+    font-size: 0.8em;
+    opacity: 0.8;
+  }
+
+  /* 태그별 포스트 목록 */
+  .tags-list-section {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+  }
+
+  .tags-list {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .tag-group {
+    border: 1px solid #f1f5f9;
+    border-radius: 12px;
+    padding: 1.5rem;
+    background: #fafafa;
+    transition: all 0.2s ease;
+  }
+
+  .tag-group:hover {
+    border-color: #ea580c;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .tag-group-header {
+    margin-bottom: 1rem;
+  }
+
+  .tag-group-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  .tag-group-title a {
+    color: #ea580c;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .tag-group-title a:hover {
+    color: #c2410c;
+    text-decoration: underline;
+  }
+
+  .tag-group-count {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 500;
+    background: #f1f5f9;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+  }
+
+  .tag-posts-preview {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .preview-post {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+  }
+
+  .preview-post:hover {
+    border-color: #ea580c;
+    transform: translateX(4px);
+  }
+
+  .preview-title {
+    color: #1e293b;
+    text-decoration: none;
+    font-weight: 500;
+    flex: 1;
+    margin-right: 1rem;
+  }
+
+  .preview-title:hover {
+    color: #ea580c;
+  }
+
+  .preview-date {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .more-posts {
+    text-align: center;
+    padding: 0.75rem;
+  }
+
+  .more-link {
+    color: #ea580c;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+
+  .more-link:hover {
+    text-decoration: underline;
+  }
+
+  /* 네비게이션 */
+  .tags-navigation {
+    text-align: center;
+    padding: 2rem 0;
+  }
+
+  .nav-link {
+    color: #ea580c;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #ea580c;
+    border-radius: 25px;
+    transition: all 0.2s ease;
+    display: inline-block;
+  }
+
+  .nav-link:hover {
+    background: #ea580c;
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  /* 빈 상태 */
+  .empty-tags {
+    text-align: center;
+    padding: 2rem;
+    color: #64748b;
+  }
+
+  /* 반응형 디자인 */
+  @media (max-width: 768px) {
+    .tags-title {
+      font-size: 2rem;
+    }
+
+    .tags-description {
+      font-size: 1rem;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+
+    .stat-number {
+      font-size: 2rem;
+    }
+
+    .tags-cloud-section,
+    .tags-list-section {
+      padding: 1.5rem;
+    }
+
+    .tags-cloud {
+      gap: 0.75rem;
+    }
+
+    .tag-group-title {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .preview-post {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .preview-title {
+      margin-right: 0;
+    }
+  }
+</style>

@@ -1,0 +1,462 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const pageTitle = "소개";
+---
+
+<BaseLayout pageTitle={pageTitle}>
+  <div class="about-container">
+    <!-- 프로필 섹션 -->
+    <section class="profile-section">
+      <div class="profile-card">
+        <div class="profile-image">
+          <img src="/favicon.svg" alt="YWKim Profile" />
+        </div>
+        <div class="profile-info">
+          <h2 class="profile-name">김영우 (YWKim)</h2>
+          <p class="profile-title">소프트웨어 개발자</p>
+          <p class="profile-description">
+            새로운 기술을 배우고 공유하는 것을 좋아하는 개발자입니다. 
+            이 블로그를 통해 학습한 내용과 개발 경험을 기록하고 있습니다.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 기술 스택 섹션 -->
+    <section class="tech-section">
+      <h3 class="section-title">기술 스택</h3>
+      <div class="tech-grid">
+        <div class="tech-category">
+          <h4>Frontend</h4>
+          <div class="tech-tags">
+            <span class="tech-tag">JavaScript</span>
+            <span class="tech-tag">TypeScript</span>
+            <span class="tech-tag">React</span>
+            <span class="tech-tag">Astro</span>
+            <span class="tech-tag">HTML/CSS</span>
+          </div>
+        </div>
+        
+        <div class="tech-category">
+          <h4>Backend</h4>
+          <div class="tech-tags">
+            <span class="tech-tag">Node.js</span>
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">Java</span>
+            <span class="tech-tag">Spring Boot</span>
+          </div>
+        </div>
+        
+        <div class="tech-category">
+          <h4>Database & Tools</h4>
+          <div class="tech-tags">
+            <span class="tech-tag">PostgreSQL</span>
+            <span class="tech-tag">MongoDB</span>
+            <span class="tech-tag">Git</span>
+            <span class="tech-tag">Docker</span>
+            <span class="tech-tag">AWS</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 경험 섹션 -->
+    <section class="experience-section">
+      <h3 class="section-title">경험</h3>
+      <div class="experience-list">
+        <div class="experience-item">
+          <div class="experience-header">
+            <h4>개인 프로젝트</h4>
+            <span class="experience-period">2024 - 현재</span>
+          </div>
+          <p class="experience-description">
+            Astro를 활용한 개인 블로그 개발 및 운영
+          </p>
+          <ul class="experience-highlights">
+            <li>Astro 프레임워크를 활용한 정적 사이트 생성</li>
+            <li>코드 하이라이팅 및 복사 기능 구현</li>
+            <li>반응형 디자인 및 사용자 경험 최적화</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 관심사 섹션 -->
+    <section class="interests-section">
+      <h3 class="section-title">관심사</h3>
+      <div class="interests-grid">
+        <div class="interest-card">
+          <div class="interest-icon">💻</div>
+          <h4>웹 개발</h4>
+          <p>최신 웹 기술과 프레임워크를 학습하고 적용하는 것을 좋아합니다.</p>
+        </div>
+        
+        <div class="interest-card">
+          <div class="interest-icon">🚀</div>
+          <h4>성능 최적화</h4>
+          <p>사용자 경험을 향상시키는 성능 최적화 기법에 관심이 많습니다.</p>
+        </div>
+        
+        <div class="interest-card">
+          <div class="interest-icon">📚</div>
+          <h4>지식 공유</h4>
+          <p>배운 내용을 정리하고 다른 사람들과 공유하는 것을 즐깁니다.</p>
+        </div>
+        
+        <div class="interest-card">
+          <div class="interest-icon">🌟</div>
+          <h4>새로운 도전</h4>
+          <p>새로운 기술과 도구를 배우고 실제 프로젝트에 적용해보는 것을 좋아합니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 연락처 섹션 -->
+    <section class="contact-section">
+      <h3 class="section-title">연락처</h3>
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="contact-icon">📧</div>
+          <div class="contact-details">
+            <h4>이메일</h4>
+            <p><a href="mailto:your.email@example.com">your.email@example.com</a></p>
+          </div>
+        </div>
+        
+        <div class="contact-item">
+          <div class="contact-icon">🐙</div>
+          <div class="contact-details">
+            <h4>GitHub</h4>
+            <p><a href="https://github.com/ywkim95" target="_blank" rel="noopener noreferrer">github.com/ywkim95</a></p>
+          </div>
+        </div>
+        
+        <div class="contact-item">
+          <div class="contact-icon">🌐</div>
+          <div class="contact-details">
+            <h4>블로그</h4>
+            <p><a href="https://blog.ywkim.xyz" target="_blank" rel="noopener noreferrer">blog.ywkim.xyz</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .about-container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* 프로필 섹션 */
+  .profile-section {
+    margin-bottom: 3rem;
+  }
+
+  .profile-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .profile-image {
+    flex-shrink: 0;
+  }
+
+  .profile-image img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid #ea580c;
+    background: #f8fafc;
+    padding: 1rem;
+  }
+
+  .profile-info {
+    flex: 1;
+  }
+
+  .profile-name {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin: 0 0 0.5rem;
+  }
+
+  .profile-title {
+    font-size: 1.25rem;
+    color: #ea580c;
+    font-weight: 600;
+    margin: 0 0 1rem;
+  }
+
+  .profile-description {
+    color: #64748b;
+    line-height: 1.6;
+    margin: 0;
+    font-size: 1.1rem;
+  }
+
+  /* 공통 섹션 스타일 */
+  .section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+    border-bottom: 3px solid #ea580c;
+    padding-bottom: 0.5rem;
+    display: inline-block;
+  }
+
+  section {
+    margin-bottom: 3rem;
+  }
+
+  /* 기술 스택 섹션 */
+  .tech-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .tech-category {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+  }
+
+  .tech-category h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 1rem;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 0.5rem;
+  }
+
+  .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tech-tag {
+    background: #fff7ed;
+    color: #ea580c;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: 1px solid #fed7aa;
+    transition: all 0.2s ease;
+  }
+
+  .tech-tag:hover {
+    background: #ea580c;
+    color: white;
+    transform: translateY(-1px);
+  }
+
+  /* 경험 섹션 */
+  .experience-list {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+  }
+
+  .experience-item {
+    margin-bottom: 2rem;
+  }
+
+  .experience-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .experience-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .experience-header h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+  }
+
+  .experience-period {
+    color: #64748b;
+    font-size: 0.9rem;
+    font-weight: 500;
+    background: #f8fafc;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+  }
+
+  .experience-description {
+    color: #64748b;
+    margin: 0.5rem 0 1rem;
+    font-size: 1.05rem;
+  }
+
+  .experience-highlights {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .experience-highlights li {
+    color: #374151;
+    margin-bottom: 0.5rem;
+    position: relative;
+    padding-left: 1.5rem;
+  }
+
+  .experience-highlights li::before {
+    content: "•";
+    color: #ea580c;
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+  }
+
+  /* 관심사 섹션 */
+  .interests-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+
+  .interest-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+
+  .interest-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    border-color: #ea580c;
+  }
+
+  .interest-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .interest-card h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 0.75rem;
+  }
+
+  .interest-card p {
+    color: #64748b;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* 연락처 섹션 */
+  .contact-info {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .contact-item {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.2s ease;
+  }
+
+  .contact-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .contact-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+  }
+
+  .contact-details h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 0.25rem;
+  }
+
+  .contact-details p {
+    margin: 0;
+    color: #64748b;
+  }
+
+  .contact-details a {
+    color: #ea580c;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .contact-details a:hover {
+    color: #c2410c;
+    text-decoration: underline;
+  }
+
+  /* 반응형 디자인 */
+  @media (max-width: 768px) {
+    .profile-card {
+      flex-direction: column;
+      text-align: center;
+      gap: 1.5rem;
+    }
+
+    .profile-image img {
+      width: 100px;
+      height: 100px;
+    }
+
+    .profile-name {
+      font-size: 1.75rem;
+    }
+
+    .tech-grid,
+    .interests-grid,
+    .contact-info {
+      grid-template-columns: 1fr;
+    }
+
+    .experience-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+    }
+  }
+</style>
