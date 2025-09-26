@@ -30,3 +30,6 @@ github-actions-key*
 
 # Documentation
 docs/
+
+# Obsidian workspace files
+.obsidian/
