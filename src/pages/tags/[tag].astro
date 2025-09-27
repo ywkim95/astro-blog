@@ -1,0 +1,290 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection("blog");
+  
+  // 모든 태그 수집
+  const uniqueTags = [...new Set(allPosts.flatMap((post) => post.data.tags))];
+  
+  // 각 태그별로 페이지 생성
+  return uniqueTags.map((tag) => {
+    const filteredPosts = allPosts.filter((post) => 
+      post.data.tags && post.data.tags.includes(tag)
+    );
+    
+    return {
+      params: { tag },
+      props: { posts: filteredPosts },
+    };
+  });
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+const pageTitle = `"${tag}" 태그의 포스트`;
+---
+
+<BaseLayout pageTitle={pageTitle}>
+  <div class="tag-page">
+    <!-- 태그 헤더 -->
+    <header class="tag-header">
+      <p class="tag-description">{posts.length}개의 포스트를 찾았습니다.</p>
+      <a href="/" class="back-link">← 전체 포스트로 돌아가기</a>
+    </header>
+
+    <!-- 포스트 목록 -->
+    <section class="tagged-posts">
+      {posts.length > 0 ? (
+        <div class="posts-grid">
+          {posts.map((post) => (
+            <article class="post-card">
+              <div class="post-content">
+                <h3 class="post-title">
+                  <a href={`/${post.slug}/`}>{post.data.title}</a>
+                </h3>
+                <p class="post-description">{post.data.description}</p>
+                <div class="post-meta">
+                  <time class="post-date">
+                    {new Date(post.data.pubDate).toLocaleDateString('ko-KR')}
+                  </time>
+                  {post.data.tags && (
+                    <div class="post-tags">
+                      {post.data.tags.map((postTag) => (
+                        <a 
+                          href={`/tags/${postTag}/`} 
+                          class={`tag ${postTag === tag ? 'current-tag' : ''}`}
+                        >
+                          {postTag}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div class="empty-state">
+          <p>이 태그에 해당하는 포스트가 없습니다.</p>
+          <a href="/" class="home-link">홈으로 돌아가기</a>
+        </div>
+      )}
+    </section>
+
+
+  </div>
+</BaseLayout>
+
+<style>
+  .tag-page {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  /* 태그 헤더 */
+  .tag-header {
+    background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+    color: white;
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .tag-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    z-index: 1;
+  }
+
+  .tag-description {
+    font-size: 1rem;
+    margin: 0;
+    opacity: 0.9;
+    position: relative;
+    z-index: 2;
+  }
+
+  .back-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    transition: all 0.2s ease;
+    position: relative;
+    z-index: 2;
+    white-space: nowrap;
+  }
+
+  .back-link:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+  }
+
+  /* 포스트 그리드 */
+  .posts-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    margin-bottom: 3rem;
+  }
+
+  .post-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+    height: fit-content;
+  }
+
+  .post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border-color: #ea580c;
+  }
+
+  .post-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .post-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .post-title a {
+    color: #1e293b;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .post-title a:hover {
+    color: #ea580c;
+  }
+
+  .post-description {
+    color: #64748b;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    flex-grow: 1;
+    margin: 0;
+  }
+
+  .post-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #f1f5f9;
+  }
+
+  .post-date {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    font-weight: 500;
+  }
+
+  .post-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    background: #f1f5f9;
+    color: #64748b;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid #e2e8f0;
+  }
+
+  .tag:hover {
+    background: #ea580c;
+    color: white;
+    transform: translateY(-1px);
+  }
+
+  .tag.current-tag {
+    background: #ea580c;
+    color: white;
+    border-color: #c2410c;
+  }
+
+  /* 빈 상태 */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #64748b;
+    background: #fff;
+    border-radius: 16px;
+    border: 2px dashed #e2e8f0;
+    margin-bottom: 3rem;
+  }
+
+  .home-link {
+    color: #ea580c;
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 1rem;
+    display: inline-block;
+  }
+
+  .home-link:hover {
+    text-decoration: underline;
+  }
+
+
+
+  /* 반응형 디자인 */
+  @media (max-width: 768px) {
+    .tag-header {
+      padding: 1.5rem 1rem;
+      margin-bottom: 1.5rem;
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+    }
+
+    .tag-description {
+      font-size: 0.9rem;
+    }
+
+    .posts-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .post-meta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+  }
+</style>
+
